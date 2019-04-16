@@ -148,6 +148,9 @@
       number: {
         type: "n",
         assert: function(v) {
+          if (typeof v != "number") {
+            return false;
+          }
           return !isNaN(v);
         }
       },
@@ -197,7 +200,7 @@
           var cell = {
             v: data[R][C]
           };
-          if (!cell.v) continue;
+          if (cell.v == null || cell.v == undefined) continue;
           var cell_ref = XLSX.utils.encode_cell({ c: C, r: R });
 
           if (!cell.t) {
