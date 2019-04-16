@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "build": "gulp build",
-    "prettier": "prettier --write './src/**/*.{js,md}'",
+    "prettier": "prettier --write ./src/**/*.{js,md}",
     "test": "gulp test",
     "prep": "yarn prettier && yarn build",
     "prepublishOnly": "yarn prep && sh ./publish.sh"
