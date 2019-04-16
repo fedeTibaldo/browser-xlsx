@@ -148,32 +148,44 @@
       number: {
         type: "n",
         assert: function(v) {
+          if (typeof v != "number") {
+            return false;
+          }
           return !isNaN(v);
         }
       },
       boolean: {
         type: "b",
         assert: function(v) {
-          return v.toLowerCase() === "true" || v.toLowerCase() === "false";
+          if (v == null) {
+            return false;
+          } else if (typeof v == "boolean") {
+            return true;
+          } else if (typeof v == "string") {
+            return v.toLowerCase() === "true" || v.toLowerCase() === "false";
+          } else {
+            return false;
+          }
         }
       },
       date: {
         type: "d",
         assert: function(v) {
-          return !/.*%/.test(v) && !isNaN(Date.parse(v));
+          return !/.*%/.test(v) && v instanceof Date && !isNaN(v);
         }
       }
     },
     /**
      * Formats datetimes for compatibility with Excel
      * @memberof BrowserXLSX.prototype
-     * @param {number} v
+     * @param {Date} v
      * @param {boolean} date1904
      * @returns {number} epoch time
      */
     dateNum: function(v, date1904) {
-      if (date1904) v += 1462;
-      var epoch = Date.parse(v);
+      // Don't know the use case yet. BTW, `v` has been refactored from number to Date object
+      // if (date1904) v += 1462;
+      var epoch = v;
       var result = (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
       return Math.floor(result);
     },
@@ -197,7 +209,7 @@
           var cell = {
             v: data[R][C]
           };
-          if (!cell.v) continue;
+          if (cell.v == null || cell.v == undefined) continue;
           var cell_ref = XLSX.utils.encode_cell({ c: C, r: R });
 
           if (!cell.t) {
