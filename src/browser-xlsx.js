@@ -150,20 +150,28 @@
         assert: function(v) {
           if (typeof v != "number") {
             return false;
-          }
+          };
           return !isNaN(v);
         }
       },
       boolean: {
         type: "b",
         assert: function(v) {
-          return v.toLowerCase() === "true" || v.toLowerCase() === "false";
+          if (typeof v == "undefined" || v == null){
+            return false;
+          } else if (typeof v == "boolean"){
+            return true;
+          } else if (typeof u == "string") {
+            return v.toLowerCase() === "true" || v.toLowerCase() === "false";
+          } else {
+            return false
+          }
         }
       },
       date: {
         type: "d",
         assert: function(v) {
-          return !/.*%/.test(v) && !isNaN(Date.parse(v));
+          return !/.*%/.test(v) && v instanceof Date && !isNaN(v);
         }
       }
     },
@@ -212,7 +220,7 @@
           if (cell.t === types.date.type) {
             cell.t = types.number.type;
             cell.z = XLSX.SSF._table[14];
-            cell.v = this.dateNum(cell.v);
+            cell.v = this.dateNum(cell.v.getDate()+"/"+cell.v.getMonth()+"/"+cell.v.getFullYear());
           }
           ws[cell_ref] = cell;
         }
