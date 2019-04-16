@@ -178,13 +178,14 @@
     /**
      * Formats datetimes for compatibility with Excel
      * @memberof BrowserXLSX.prototype
-     * @param {number} v
+     * @param {Date} v
      * @param {boolean} date1904
      * @returns {number} epoch time
      */
     dateNum: function(v, date1904) {
-      if (date1904) v += 1462;
-      var epoch = Date.parse(v);
+      // Don't know the use case yet. BTW, `v` has been refactored from number to Date object
+      // if (date1904) v += 1462;
+      var epoch = v;
       var result = (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
       return Math.floor(result);
     },
@@ -220,7 +221,7 @@
           if (cell.t === types.date.type) {
             cell.t = types.number.type;
             cell.z = XLSX.SSF._table[14];
-            cell.v = this.dateNum(cell.v.getDate() + "/" + cell.v.getMonth() + "/" + cell.v.getFullYear());
+            cell.v = this.dateNum(cell.v);
           }
           ws[cell_ref] = cell;
         }
