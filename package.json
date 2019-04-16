@@ -1,6 +1,6 @@
 {
   "name": "browser-xlsx",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "fedeTibaldo <fedetibaldo@protonmail.com>",
   "description": "Bringing js-xlsx to the browser.",
   "main": "dist/browser-xlsx.min.js",
